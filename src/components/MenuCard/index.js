@@ -25,24 +25,22 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { SuiBox } from "softui/SuiBox";
 import { SuiTypography } from "softui/SuiTypography";
 
-export const MenuCard = ({ bgColor, title, description }) => {
+export const MenuCard = ({ bgColor, title, description, href }) => {
   let pt = 2;
 
   const theme = useTheme();
   const md = useMediaQuery(theme.breakpoints.up("md"));
-  const lg = useMediaQuery(theme.breakpoints.up("lg"));
 
-  if (md) pt += 2;
-  if (lg) pt += 4;
+  if (md) pt += 1;
 
   return (
-    <a href="#registra">
+    <a href={href}>
       <Card style={{ height: "100%" }}>
         <SuiBox bgColor={bgColor} variant="gradient">
-          <SuiBox px={4} py={2}>
+          <SuiBox px={4} py={pt}>
             <Grid container alignItems="center">
               <Grid item xs={12}>
-                <SuiBox pt={pt} lineHeight={1}>
+                <SuiBox lineHeight={1}>
                   <SuiTypography
                     variant="h5"
                     fontWeight="bold"
@@ -74,6 +72,7 @@ MenuCard.defaultProps = {
   bgColor: "white",
   title: "",
   description: "",
+  href: "#null",
 };
 
 // Typechecking props for the MenuCard
@@ -90,4 +89,5 @@ MenuCard.propTypes = {
   ]),
   title: PropTypes.string,
   description: PropTypes.string,
+  href: PropTypes.string,
 };

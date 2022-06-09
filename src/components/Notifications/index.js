@@ -24,71 +24,155 @@ import { SuiTypography } from "softui/SuiTypography";
 
 // Soft UI Dashboard React example components
 import { NotificationsItem } from "components/NotificationsItem";
+import { useQuery } from "hooks/useQuery";
+import { dateFormatter } from "utils/dateFormatter";
 
-const fecondare = ["IT123456789012", "IT345678901234", "IT567890123456"];
-const prossimeasciutta = ["IT678901234567", "IT890123456789", "IT012345678901"];
-const prossimiparti = ["IT234567890123", "IT456789012345", "IT678901234567"];
+export const Notifications = () => {
+  const { data: daFecondare, loading: loadingDaFecondare } = useQuery({
+    action: "get-notifica-bovini-da-fecondare",
+    showErrorInSnackbar: true,
+    defaultErrorMessage:
+      "Errore nella ricezione dell'elenco dei bovini da fecondare",
+    defaultValue: [],
+  });
 
-export const Notifications = () => (
-  <Card className="h-100">
-    <SuiBox py={3} px={3}>
-      <SuiTypography variant="h4" fontWeight="medium">
-        Notifiche
-      </SuiTypography>
-      <SuiBox pt={2}>
-        <SuiTypography variant="h6" fontWeight="medium">
-          Prossime vacche da fecondare
+  const {
+    data: daControllareFecondazione,
+    loading: loadingDaControllareFecondazione,
+  } = useQuery({
+    action: "get-notifica-fecondazioni-da-confermare",
+    showErrorInSnackbar: true,
+    defaultErrorMessage:
+      "Errore nella ricezione dell'elenco dei bovini da controllare",
+    defaultValue: [],
+  });
+
+  const { data: daAsciugare, loading: loadingDaAsciugare } = useQuery({
+    action: "get-notifica-bovini-da-asciugare",
+    showErrorInSnackbar: true,
+    defaultErrorMessage:
+      "Errore nella ricezione dell'elenco dei bovini da asciugare",
+    defaultValue: [],
+  });
+
+  const { data: inTermineGravidanza, loading: loadingInTermineGravidanza } =
+    useQuery({
+      action: "get-notifica-bovini-termine-gravidanza",
+      showErrorInSnackbar: true,
+      defaultErrorMessage:
+        "Errore nella ricezione dell'elenco dei bovini a termine di gravidanza",
+      defaultValue: [],
+    });
+
+  const loading =
+    loadingDaAsciugare ||
+    loadingDaControllareFecondazione ||
+    loadingDaFecondare ||
+    loadingInTermineGravidanza;
+
+  return (
+    <Card className="h-100">
+      <SuiBox py={3} px={3}>
+        <SuiTypography variant="h4" fontWeight="medium">
+          Notifiche
         </SuiTypography>
-        <List>
-          {fecondare.map((vacca) => (
-            <ListItem key={vacca}>
-              <NotificationsItem
-                variant="litte-big"
-                little={vacca.substring(0, 10)}
-                big={vacca.substring(10)}
-                date={new Date()}
-              />
-            </ListItem>
-          ))}
-        </List>
+        {daFecondare.length > 0 && (
+          <SuiBox pt={2}>
+            <SuiTypography variant="h6" fontWeight="medium">
+              Prossime fecondazioni
+            </SuiTypography>
+            <List>
+              {daFecondare.map((vacca) => (
+                <ListItem key={vacca}>
+                  <NotificationsItem
+                    variant="litte-big"
+                    little={vacca.codice.substring(0, 10)}
+                    big={vacca.codice.substring(10)}
+                    desc={`Nata il ${dateFormatter(
+                      new Date(vacca.dataNascita)
+                    )}`}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </SuiBox>
+        )}
 
-        <SuiBox pt={2}>
-          <SuiTypography variant="h6" fontWeight="medium">
-            Prossime vacche da mettere in asciutta
-          </SuiTypography>
-          <List>
-            {prossimeasciutta.map((vacca) => (
-              <ListItem key={vacca}>
-                <NotificationsItem
-                  variant="litte-big"
-                  little={vacca.substring(0, 10)}
-                  big={vacca.substring(10)}
-                  date={new Date()}
-                />
-              </ListItem>
-            ))}
-          </List>
-        </SuiBox>
+        {daControllareFecondazione.length > 0 && (
+          <SuiBox pt={2}>
+            <SuiTypography variant="h6" fontWeight="medium">
+              Prossimi controlli delle fecondazioni
+            </SuiTypography>
+            <List>
+              {daControllareFecondazione.map((vacca) => (
+                <ListItem key={vacca}>
+                  <NotificationsItem
+                    variant="litte-big"
+                    little={vacca.codice.substring(0, 10)}
+                    big={vacca.codice.substring(10)}
+                    desc={`Fecondata il ${dateFormatter(new Date(vacca.data))}`}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </SuiBox>
+        )}
 
-        <SuiBox pt={2}>
-          <SuiTypography variant="h6" fontWeight="medium">
-            Vacche prossime al parto
-          </SuiTypography>
-          <List>
-            {prossimiparti.map((vacca) => (
-              <ListItem key={vacca}>
-                <NotificationsItem
-                  variant="litte-big"
-                  little={vacca.substring(0, 10)}
-                  big={vacca.substring(10)}
-                  date={new Date()}
-                  estimation
-                />
-              </ListItem>
-            ))}
-          </List>
-        </SuiBox>
+        {daAsciugare.length > 0 && (
+          <SuiBox pt={2}>
+            <SuiTypography variant="h6" fontWeight="medium">
+              Prossime asciutte
+            </SuiTypography>
+            <List>
+              {daAsciugare.map((vacca) => (
+                <ListItem key={vacca}>
+                  <NotificationsItem
+                    variant="litte-big"
+                    little={vacca.codice.substring(0, 10)}
+                    big={vacca.codice.substring(10)}
+                    desc={`Fecondata il ${dateFormatter(new Date(vacca.data))}`}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </SuiBox>
+        )}
+
+        {inTermineGravidanza.length > 0 && (
+          <SuiBox pt={2}>
+            <SuiTypography variant="h6" fontWeight="medium">
+              Prossime nascite
+            </SuiTypography>
+            <List>
+              {inTermineGravidanza.map((vacca) => {
+                const dataParto = new Date(vacca.data);
+                dataParto.setDate(dataParto.getDate() + 280); // 280 giorni = durata gravidanza
+
+                return (
+                  <ListItem key={vacca}>
+                    <NotificationsItem
+                      variant="litte-big"
+                      little={vacca.codice.substring(0, 10)}
+                      big={vacca.codice.substring(10)}
+                      desc={`${dateFormatter(dataParto)}`}
+                      estimation
+                    />
+                  </ListItem>
+                );
+              })}
+            </List>
+          </SuiBox>
+        )}
+
+        {daFecondare.length === 0 &&
+          daControllareFecondazione.length === 0 &&
+          daAsciugare.length === 0 &&
+          inTermineGravidanza.length === 0 && (
+            <SuiTypography sx={{ pt: 2 }} variant="h6" fontWeight="medium">
+              {loading ? "Caricamento..." : "Non ci sono notifiche"}
+            </SuiTypography>
+          )}
       </SuiBox>
-    </SuiBox>
-  </Card>
-);
+    </Card>
+  );
+};

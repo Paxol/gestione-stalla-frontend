@@ -28,7 +28,7 @@ export const NotificationsItem = ({
   little,
   big,
   text,
-  date,
+  desc,
   estimation,
 }) => {
   let children = null;
@@ -58,7 +58,7 @@ export const NotificationsItem = ({
             style={{ lineHeight: 1 }}
           >
             {estimation && "Stima: "}
-            {date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}
+            {desc}
           </SuiTypography>
         </>
       );
@@ -84,6 +84,7 @@ NotificationsItem.defaultProps = {
   little: "",
   big: "",
   text: "",
+  desc: "",
   estimation: false,
 };
 
@@ -93,6 +94,6 @@ NotificationsItem.propTypes = {
   little: PropTypes.string,
   big: PropTypes.string,
   text: PropTypes.string,
-  date: PropTypes.instanceOf(Date).isRequired,
+  desc: PropTypes.string,
   estimation: PropTypes.bool,
 };

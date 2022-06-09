@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "public": "build",
+    "site": "manager-stalla",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

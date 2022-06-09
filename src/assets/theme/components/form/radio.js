@@ -30,8 +30,8 @@ export const radio = {
       backgroundPosition: "center",
       backgroundSize: "contain",
       backgroundRepeat: "no-repeat",
-      width: pxToRem(20),
-      height: pxToRem(20),
+      width: pxToRem(16),
+      height: pxToRem(16),
       marginRight: pxToRem(6),
       padding: 0,
       color: transparent.main,
@@ -57,10 +57,10 @@ export const radio = {
 
       "&.Mui-checked": {
         backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='15px' width='15px'%3E%3Ccircle cx='50%' cy='50%' r='3' fill='%23fff' /%3E%3C/svg%3E"), ${linearGradient(
-          gradients.dark.main,
-          gradients.dark.state
+          info.main,
+          info.focus
         )}`,
-        borderColor: gradients.dark.main,
+        borderColor: info.main,
       },
 
       "&:hover": {

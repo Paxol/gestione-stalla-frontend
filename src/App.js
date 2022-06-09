@@ -27,6 +27,8 @@ import { theme } from "assets/theme";
 
 // Soft UI Dashboard PRO React routes
 import { routes } from "routes";
+import { OnlineStatusProvider } from "utils/OnlineStatus";
+import { SnackbarProvider } from "notistack";
 
 export const App = () => {
   const { pathname } = useLocation();
@@ -58,12 +60,16 @@ export const App = () => {
     });
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Switch>
-        {getRoutes(routes)}
-        <Redirect from="*" to="/dashboard" />
-      </Switch>
-    </ThemeProvider>
+    <SnackbarProvider maxSnack={3}>
+      <OnlineStatusProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Switch>
+            {getRoutes(routes)}
+            <Redirect from="*" to="/dashboard" />
+          </Switch>
+        </ThemeProvider>
+      </OnlineStatusProvider>
+    </SnackbarProvider>
   );
 };
